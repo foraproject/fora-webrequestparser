@@ -1,0 +1,22 @@
+{
+    "author": "Jeswin Kumar <jeswinpk@agilehead.com>",
+    "name": "fora-webrequestparser",
+    "version": "0.0.1",
+    "description": "Fora's Web Request Parser serializes form data into objects.",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/jeswin/fora-webrequestparser.git"
+    },
+    "main": "lib",
+    "dependencies": {
+        "validator": "*",
+        "sanitizer": "*",
+        "co": "*",
+        "co-body": "*",
+        "co-multipart": "*",
+    },
+    "devDependencies": {},
+    "engines": { "node": ">= 0.11.9" },
+    "keywords": ["serialization"],
+    "license" : "GPL-3.0+"
+}
