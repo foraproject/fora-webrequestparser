@@ -7,7 +7,7 @@
         "type": "git",
         "url": "https://github.com/jeswin/fora-webrequestparser.git"
     },
-    "main": "lib",
+    "main": "dist",
     "dependencies": {
         "validator": "*",
         "sanitizer": "*",
