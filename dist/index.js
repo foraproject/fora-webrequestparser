@@ -42,7 +42,7 @@
         };
       }
       if (!this.initted) {
-        this.rawBody = yield body(this.ctx);
+        this.rawBody = yield* body(this.ctx);
         this.initted = true;
       }
       if (typeof def === 'string') {
@@ -79,12 +79,12 @@
         }
         return _results;
       })();
-      return yield this.map_impl(target, whitelist, options, parents);
+      return yield* this.map_impl(target, whitelist, options, parents);
     };
 
     RequestParser.prototype.map_impl = function*(target, whitelist, options, parents) {
       var a, changed, def, fieldName, fieldWhiteList, typeDef, _ref;
-      typeDef = yield target.getTypeDefinition();
+      typeDef = yield* target.getTypeDefinition();
       _ref = typeDef.schema.properties;
       for (fieldName in _ref) {
         def = _ref[fieldName];
@@ -99,7 +99,7 @@
           }
           return _results;
         })();
-        if (yield this.setField(target, fieldName, def, typeDef, fieldWhiteList, options, parents)) {
+        if (yield* this.setField(target, fieldName, def, typeDef, fieldWhiteList, options, parents)) {
           changed = true;
         }
       }
@@ -111,20 +111,20 @@
       if (this.typeUtils.isPrimitiveType(def.type)) {
         if (def.type !== 'array') {
           if (((_ref = whitelist[0]) != null ? _ref[0] : void 0) === fieldName) {
-            return yield this.setSimpleType(obj, fieldName, def, typeDef, whitelist, options, parents);
+            return yield* this.setSimpleType(obj, fieldName, def, typeDef, whitelist, options, parents);
           }
         } else {
-          return yield this.setArray(obj, fieldName, def, typeDef, whitelist, options, parents);
+          return yield* this.setArray(obj, fieldName, def, typeDef, whitelist, options, parents);
         }
       } else {
-        return yield this.setCustomType(obj, fieldName, def, typeDef, whitelist, options, parents);
+        return yield* this.setCustomType(obj, fieldName, def, typeDef, whitelist, options, parents);
       }
     };
 
     RequestParser.prototype.setSimpleType = function*(obj, fieldName, def, typeDef, whitelist, options, parents) {
       var changed, formField, result, val;
       formField = parents.concat(fieldName).join('_');
-      val = yield this.body(formField);
+      val = yield* this.body(formField);
       if (val) {
         result = this.parseSimpleType(val, fieldName, def, typeDef);
         if (!(obj instanceof Array)) {
@@ -150,7 +150,7 @@
         if (def.items.type !== 'array') {
           if (whitelist.indexOf(fieldName) !== -1) {
             formField = parents.concat(fieldName).join('_');
-            val = yield this.body(formField);
+            val = yield* this.body(formField);
             items = val.split(',');
             for (_i = 0, _len = items.length; _i < _len; _i++) {
               i = items[_i];
@@ -166,7 +166,7 @@
         counter = 1;
         newArray = (_ref1 = obj[fieldName]) != null ? _ref1 : [];
         while (true) {
-          if (yield this.setField(newArray, counter, def.items, def, whitelist, options, parents)) {
+          if (yield* this.setField(newArray, counter, def.items, def, whitelist, options, parents)) {
             counter++;
             if (obj[fieldName] == null) {
               obj[fieldName] = newArray;
@@ -195,7 +195,7 @@
       parents.push(fieldName);
       if ((_ref = def.typeDefinition) != null ? _ref.ctor : void 0) {
         newObj = new def.typeDefinition.ctor();
-        changed = yield this.map_impl(newObj, whitelist, options, parents);
+        changed = yield* this.map_impl(newObj, whitelist, options, parents);
         if (changed) {
           if (!(obj instanceof Array)) {
             obj[fieldName] = newObj;
