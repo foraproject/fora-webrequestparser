@@ -17,7 +17,7 @@ class RequestParser
 
     body: (name, def = { type: 'string' }) =>*
         if not @initted
-            @rawBody = yield* body @ctx
+            @rawBody = yield body @ctx
             @initted = true
 
         if typeof def is 'string'

@@ -42,7 +42,7 @@
         };
       }
       if (!this.initted) {
-        this.rawBody = yield* body(this.ctx);
+        this.rawBody = yield body(this.ctx);
         this.initted = true;
       }
       if (typeof def === 'string') {
